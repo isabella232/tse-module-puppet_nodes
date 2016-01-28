@@ -1,5 +1,5 @@
 application all {
 
-  all::member { "$title node": }
+  all::member { $title: }
 
 }

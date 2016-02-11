@@ -4,7 +4,7 @@ Puppet::Functions.create_function(:to_all_nodes) do
     param 'String', :title
   end
 
-  def resolve(input)
+  def resolve(input, title)
     iter = 0
     input.inject({}) do |hash,node|
       key = Puppet::Resource.new(nil, "Node[#{node}]", {})

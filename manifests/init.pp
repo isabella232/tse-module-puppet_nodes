@@ -1,10 +1,10 @@
-application all (
+application node_group (
   $node_count,
 ) {
 
   $node_count.each |$i| {
-    all::member { "${title}-${i}":
-      exports => All_token[$title],
+    node_group::member { "${title}-${i}":
+      export => Node_group_member_token["${title}-${i}"],
     }
   }
 

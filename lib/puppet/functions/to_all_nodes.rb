@@ -10,7 +10,7 @@ Puppet::Functions.create_function(:to_all_nodes) do
       key = Puppet::Resource.new(nil, "Node[#{node}]", {})
       val = Puppet::Resource.new(nil, "All::Member[#{title}-#{iter.to_s}]", {})
       hash[key] = val
-      iter++
+      iter += 1
       hash
     end
   end

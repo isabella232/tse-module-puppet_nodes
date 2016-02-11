@@ -1,7 +1,7 @@
 Puppet::Functions.create_function(:to_all_nodes) do
   dispatch :resolve do
-    param 'String', :title
     param 'Array',  :input
+    param 'String', :title
   end
 
   def resolve(input)

@@ -8,6 +8,23 @@ To use this module code must be placed in the `site` block.
 
 > Note: this module depends on the unreleased [node\_manager/pull/42 patch](https://github.com/puppetlabs/prosvcs-node_manager/pull/42).
 
+## Installation ##
+
+1. Install the `puppetclassify` gem
+
+        /opt/puppetlabs/puppet/bin/gem install puppetclassify
+        puppetserver gem install puppetclassify
+
+2. Install the module and module dependencies. Some modules will need to be pulled from source due to required patches or Forge non-availability.
+
+        curl -Lo node_manager.tar.gz https://github.com/reidmv/prosvcs-node_manager/archive/puppet_node_fixes.tar.gz
+        curl -Lo puppet_nodes.tar.gz https://github.com/puppetlabs/tse-module-puppet_nodes/archive/master.tar.gz
+        puppet module install dalen/puppetdbquery
+        puppet module install --force node_manager.tar.gz
+        puppet module install --force puppet_nodes.tar.gz
+
+3. Edit your `site.pp` file to include the code shown below under Example Usage
+
 ## Example usage ##
 
 ```puppet
@@ -23,7 +40,8 @@ site {
   $node_groups = node_groups()
   $node_groups.each |$name,$data| {
     $nodes = node_group_members($data['rule'])
-    puppet_nodes::group { $name:
+    $safename = $name.regsubst('/', '-', 'G')
+    puppet_nodes::group { $safename:
       node_count => $nodes.size,
       nodes      => $nodes.to_puppet_nodes_group_nodes($name),
     }

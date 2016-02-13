@@ -1,40 +1,116 @@
-Example usage
+# puppet\_nodes #
 
+This module provides a mechanism for automatically creating an application instance for every node PuppetDB knows of, and for every group defined in the Node Classifier. The intended example use case is using the Puppet Application Orchestrator to run Puppet, on demand, on arbitrary nodes or node groups as defined in the NC.
 
-    site {
-    
-      $nodes = ['node1', 'node2']
-      $all_nodes.each |$node| {
-        puppet_nodes::node { $node:
-          nodes => { Node[$node] => Puppet_nodes::Component[$node] },
-        }
-      }
-    
-      puppet_nodes::group { 'all':
-        node_count => $nodes.size,
-        nodes      => $nodes.to_puppet_nodes_group_nodes('all'),
-      }
-    
+The module depends on two Forge modules: `dalen/puppetdbquery` and `WhatsARanjit/node_manager`. These modules are used for functions, and for libraries that simplify interaction with PuppetDB and the NC, respectively.
+
+To use this module code must be placed in the `site` block.
+
+> Note: this module depends on the unreleased [node\_manager/pull/42 patch](https://github.com/puppetlabs/prosvcs-node_manager/pull/42).
+
+## Example usage ##
+
+```puppet
+site {
+
+  $all_nodes = query_nodes('')
+  $all_nodes.each |$node| {
+    puppet_nodes::node { $node:
+      nodes => { Node[$node] => Puppet_nodes::Component[$node] },
     }
+  }
 
-Or
-
-    site {
-    
-      $all_nodes = query_nodes('')
-      $all_nodes.each |$node| {
-        puppet_nodes::node { $node:
-          nodes => { Node[$node] => Puppet_nodes::Component[$node] },
-        }
-      }
-    
-      $node_groups = node_groups()
-      $node_groups.each |$name,$data| {
-        $nodes = node_group_members($data['rule'])
-        puppet_nodes::group { $name:
-          node_count => $nodes.size,
-          nodes      => $nodes.to_puppet_nodes_group_nodes($name),
-        }
-      }
-    
+  $node_groups = node_groups()
+  $node_groups.each |$name,$data| {
+    $nodes = node_group_members($data['rule'])
+    puppet_nodes::group { $name:
+      node_count => $nodes.size,
+      nodes      => $nodes.to_puppet_nodes_group_nodes($name),
     }
+  }
+
+}
+```
+
+## Example Output ##
+
+With the code above placed in the `site` block, the results of running the `puppet app show` command might look something like the following.
+
+```
+Puppet_nodes::Group['Agent-specified environment']
+
+Puppet_nodes::Group['All Nodes']
+    Puppet_nodes::Component['All Nodes-4'] => puppet-master
+        - produces Puppet_nodes_component_token['All Nodes-4']
+    Puppet_nodes::Component['All Nodes-2'] => node2
+        - produces Puppet_nodes_component_token['All Nodes-2']
+    Puppet_nodes::Component['All Nodes-1'] => node4
+        - produces Puppet_nodes_component_token['All Nodes-1']
+    Puppet_nodes::Component['All Nodes-3'] => node1
+        - produces Puppet_nodes_component_token['All Nodes-3']
+    Puppet_nodes::Component['All Nodes-0'] => node3
+        - produces Puppet_nodes_component_token['All Nodes-0']
+
+Puppet_nodes::Group['PE ActiveMQ Broker']
+    Puppet_nodes::Component['PE ActiveMQ Broker-0'] => puppet-master
+        - produces Puppet_nodes_component_token['PE ActiveMQ Broker-0']
+
+Puppet_nodes::Group['PE Agent']
+
+Puppet_nodes::Group['PE Certificate Authority']
+    Puppet_nodes::Component['PE Certificate Authority-0'] => puppet-master
+        - produces Puppet_nodes_component_token['PE Certificate Authority-0']
+
+Puppet_nodes::Group['PE Console']
+    Puppet_nodes::Component['PE Console-0'] => puppet-master
+        - produces Puppet_nodes_component_token['PE Console-0']
+
+Puppet_nodes::Group['PE Infrastructure']
+
+Puppet_nodes::Group['PE MCollective']
+
+Puppet_nodes::Group['PE Master']
+    Puppet_nodes::Component['PE Master-0'] => puppet-master
+        - produces Puppet_nodes_component_token['PE Master-0']
+
+Puppet_nodes::Group['PE Orchestrator']
+    Puppet_nodes::Component['PE Orchestrator-0'] => puppet-master
+        - produces Puppet_nodes_component_token['PE Orchestrator-0']
+
+Puppet_nodes::Group['PE PuppetDB']
+    Puppet_nodes::Component['PE PuppetDB-0'] => puppet-master
+        - produces Puppet_nodes_component_token['PE PuppetDB-0']
+
+Puppet_nodes::Group['Production environment']
+    Puppet_nodes::Component['Production environment-1'] => node4
+        - produces Puppet_nodes_component_token['Production environment-1']
+    Puppet_nodes::Component['Production environment-3'] => node1
+        - produces Puppet_nodes_component_token['Production environment-3']
+    Puppet_nodes::Component['Production environment-4'] => puppet-master
+        - produces Puppet_nodes_component_token['Production environment-4']
+    Puppet_nodes::Component['Production environment-2'] => node2
+        - produces Puppet_nodes_component_token['Production environment-2']
+    Puppet_nodes::Component['Production environment-0'] => node3
+        - produces Puppet_nodes_component_token['Production environment-0']
+
+Puppet_nodes::Node['node1']
+    Puppet_nodes::Component['node1'] => node1
+        - produces Puppet_nodes_component_token['node1']
+
+Puppet_nodes::Node['node2']
+    Puppet_nodes::Component['node2'] => node2
+        - produces Puppet_nodes_component_token['node2']
+
+Puppet_nodes::Node['node3']
+    Puppet_nodes::Component['node3'] => node3
+        - produces Puppet_nodes_component_token['node3']
+
+Puppet_nodes::Node['node4']
+    Puppet_nodes::Component['node4'] => node4
+        - produces Puppet_nodes_component_token['node4']
+
+Puppet_nodes::Node['puppet-master']
+    Puppet_nodes::Component['puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['puppet-master']
+
+```

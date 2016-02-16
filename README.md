@@ -42,8 +42,7 @@ site {
     $nodes = node_group_members($data['rule'])
     $safename = $name.regsubst('/', '-', 'G')
     puppet_nodes::group { $safename:
-      node_count => $nodes.size,
-      nodes      => $nodes.to_puppet_nodes_group_nodes($name),
+      nodes => $nodes.to_puppet_nodes_group_nodes($name),
     }
   }
 

@@ -57,58 +57,58 @@ With the code above placed in the `site` block, the results of running the `pupp
 Puppet_nodes::Group['Agent-specified environment']
 
 Puppet_nodes::Group['All Nodes']
-    Puppet_nodes::Component['All Nodes-4'] => puppet-master
-        - produces Puppet_nodes_component_token['All Nodes-4']
-    Puppet_nodes::Component['All Nodes-2'] => node2
-        - produces Puppet_nodes_component_token['All Nodes-2']
-    Puppet_nodes::Component['All Nodes-1'] => node4
-        - produces Puppet_nodes_component_token['All Nodes-1']
-    Puppet_nodes::Component['All Nodes-3'] => node1
-        - produces Puppet_nodes_component_token['All Nodes-3']
-    Puppet_nodes::Component['All Nodes-0'] => node3
-        - produces Puppet_nodes_component_token['All Nodes-0']
+    Puppet_nodes::Component['All Nodes: node3'] => node3
+        - produces Puppet_nodes_component_token['All Nodes: node3']
+    Puppet_nodes::Component['All Nodes: node1'] => node1
+        - produces Puppet_nodes_component_token['All Nodes: node1']
+    Puppet_nodes::Component['All Nodes: node4'] => node4
+        - produces Puppet_nodes_component_token['All Nodes: node4']
+    Puppet_nodes::Component['All Nodes: puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['All Nodes: puppet-master']
+    Puppet_nodes::Component['All Nodes: node2'] => node2
+        - produces Puppet_nodes_component_token['All Nodes: node2']
 
 Puppet_nodes::Group['PE ActiveMQ Broker']
-    Puppet_nodes::Component['PE ActiveMQ Broker-0'] => puppet-master
-        - produces Puppet_nodes_component_token['PE ActiveMQ Broker-0']
+    Puppet_nodes::Component['PE ActiveMQ Broker: puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['PE ActiveMQ Broker: puppet-master']
 
 Puppet_nodes::Group['PE Agent']
 
 Puppet_nodes::Group['PE Certificate Authority']
-    Puppet_nodes::Component['PE Certificate Authority-0'] => puppet-master
-        - produces Puppet_nodes_component_token['PE Certificate Authority-0']
+    Puppet_nodes::Component['PE Certificate Authority: puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['PE Certificate Authority: puppet-master']
 
 Puppet_nodes::Group['PE Console']
-    Puppet_nodes::Component['PE Console-0'] => puppet-master
-        - produces Puppet_nodes_component_token['PE Console-0']
+    Puppet_nodes::Component['PE Console: puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['PE Console: puppet-master']
 
 Puppet_nodes::Group['PE Infrastructure']
 
 Puppet_nodes::Group['PE MCollective']
 
 Puppet_nodes::Group['PE Master']
-    Puppet_nodes::Component['PE Master-0'] => puppet-master
-        - produces Puppet_nodes_component_token['PE Master-0']
+    Puppet_nodes::Component['PE Master: puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['PE Master: puppet-master']
 
 Puppet_nodes::Group['PE Orchestrator']
-    Puppet_nodes::Component['PE Orchestrator-0'] => puppet-master
-        - produces Puppet_nodes_component_token['PE Orchestrator-0']
+    Puppet_nodes::Component['PE Orchestrator: puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['PE Orchestrator: puppet-master']
 
 Puppet_nodes::Group['PE PuppetDB']
-    Puppet_nodes::Component['PE PuppetDB-0'] => puppet-master
-        - produces Puppet_nodes_component_token['PE PuppetDB-0']
+    Puppet_nodes::Component['PE PuppetDB: puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['PE PuppetDB: puppet-master']
 
 Puppet_nodes::Group['Production environment']
-    Puppet_nodes::Component['Production environment-1'] => node4
-        - produces Puppet_nodes_component_token['Production environment-1']
-    Puppet_nodes::Component['Production environment-3'] => node1
-        - produces Puppet_nodes_component_token['Production environment-3']
-    Puppet_nodes::Component['Production environment-4'] => puppet-master
-        - produces Puppet_nodes_component_token['Production environment-4']
-    Puppet_nodes::Component['Production environment-2'] => node2
-        - produces Puppet_nodes_component_token['Production environment-2']
-    Puppet_nodes::Component['Production environment-0'] => node3
-        - produces Puppet_nodes_component_token['Production environment-0']
+    Puppet_nodes::Component['Production environment: node1'] => node1
+        - produces Puppet_nodes_component_token['Production environment: node1']
+    Puppet_nodes::Component['Production environment: node2'] => node2
+        - produces Puppet_nodes_component_token['Production environment: node2']
+    Puppet_nodes::Component['Production environment: node3'] => node3
+        - produces Puppet_nodes_component_token['Production environment: node3']
+    Puppet_nodes::Component['Production environment: puppet-master'] => puppet-master
+        - produces Puppet_nodes_component_token['Production environment: puppet-master']
+    Puppet_nodes::Component['Production environment: node4'] => node4
+        - produces Puppet_nodes_component_token['Production environment: node4']
 
 Puppet_nodes::Node['node1']
     Puppet_nodes::Component['node1'] => node1
@@ -129,5 +129,4 @@ Puppet_nodes::Node['node4']
 Puppet_nodes::Node['puppet-master']
     Puppet_nodes::Component['puppet-master'] => puppet-master
         - produces Puppet_nodes_component_token['puppet-master']
-
 ```

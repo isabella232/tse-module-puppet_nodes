@@ -1,6 +1,6 @@
 {
   "name":         "tse-puppet_nodes",
-  "version":      "0.1.0",
+  "version":      "0.2.0",
   "author":       "Reid Vandewiele",
   "license":      "Apache-2.0",
   "summary":      "Module to create application instances for all nodes and node groups",
